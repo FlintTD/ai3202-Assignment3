@@ -2,7 +2,7 @@ import sys
 import random
 
 
-class Horse(object):                                    # horse class
+class Horse(object):                                    # horse class, sort of superfluous
     x = 0
     y = 0
 
@@ -71,7 +71,6 @@ def diagonal(origin, goal):                             # Diagonal Shortcut heur
 def wild_ride():                                        # THE RIDE NEVER ENDS
     score = random.randint(1, 50)
     return score
-
 
 
 def a_star_search(map, center, goal, algcode, searched, trail, score, checks, iterkill):

@@ -58,7 +58,7 @@ def manhattan(origin, goal):
     return score
 
 
-def diagonal(origin, goal):
+def diagonal(origin, goal):                             # Diagonal Shortcut heuristic
     ydist = abs(origin.y - goal.y)
     xdist = abs(origin.x - goal.x)
     if ydist > xdist:
@@ -68,7 +68,7 @@ def diagonal(origin, goal):
     return score
 
 
-def wild_ride():
+def wild_ride():                                        # THE RIDE NEVER ENDS
     score = random.randint(1, 50)
     return score
 

@@ -1,4 +1,5 @@
 import sys
+import random
 
 
 class Horse(object):                                    # horse class
@@ -57,7 +58,20 @@ def manhattan(origin, goal):
     return score
 
 
-# def myaltgorithm():
+def diagonal(origin, goal):
+    ydist = abs(origin.y - goal.y)
+    xdist = abs(origin.x - goal.x)
+    if ydist > xdist:
+        score = (14 * xdist) + (10 * (ydist - xdist))
+    else:
+        score = (14 * ydist) + (10 * (xdist - ydist))
+    return score
+
+
+def wild_ride():
+    score = random.randint(1, 50)
+    return score
+
 
 
 def a_star_search(map, center, goal, algcode, searched, trail, score, checks, iterkill):
@@ -99,7 +113,9 @@ def a_star_search(map, center, goal, algcode, searched, trail, score, checks, it
                 if algcode is "1":
                     tempscore = g_score(map, center, pointer) + manhattan(pointer, goal)
                 elif algcode is "2":
-                    tempscore = g_score(map, center, pointer) + myalgorithm(pointer, goal)
+                    tempscore = g_score(map, center, pointer) + diagonal(pointer, goal)
+                elif algcode is "3":
+                    tempscore = g_score(map, center, pointer) + wild_ride()
                 if currentf == 0 or tempscore < currentf:
                     currentf = tempscore
                     scrutiny = pointer
@@ -126,7 +142,7 @@ def a_star_search(map, center, goal, algcode, searched, trail, score, checks, it
         return trail, score, checks
     elif scrutiny is None:
         return trail, score, checks
-    elif iterkill > 10:
+    elif iterkill > 40:                                 # emergency overflow shutdown
         return trail, score, checks
     else:                                               # if goal is not reached, iterate
         results = a_star_search(map, location, goal, algcode, searched, trail, score, checks, iterkill)
@@ -156,10 +172,14 @@ def main(argv):                                         # -------MAIN-----------
     leash = 0
 
     result = a_star_search(world, origin, goal, s, searched_nodes, path, totalscore, totalchecks, leash)
+
+    sum = 0
+    for r in range(0, len(result[1])-1):
+        sum += result[1][r]
     print "Path followed:"
     for yy in result[0]:
         yy.print_node()
-    print "Total F-Score is: %s" % result[1]
+    print "Total F-Score is: %s" % sum
     print "Total number of unique node checks: %s" % result[2]
 
 
@@ -169,4 +189,8 @@ if __name__ == "__main__":
 
 # Cited Code
 # http://stackoverflow.com/questions/10393176/is-there-a-way-to-read-a-txt-file-and-store-each-line-to-memory
-# 1 May 2012
+# May 1, 2012
+#
+# Cited Heuristic
+# http://www.policyalmanac.org/games/heuristics.htm
+# By Patrick Lester - April 21, 2004
